@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sổ Tay Từ Tiếng Việt (Xét Theo Cấu Tạo)</title>
+    <!-- Google Fonts: Be Vietnam Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.4);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.7);
+        }
+        .highlight-text {
+            background-color: rgba(250, 204, 21, 0.35);
+            padding: 0.1rem 0.2rem;
+            border-radius: 0.2rem;
+        }
+        .dark .highlight-text {
+            background-color: rgba(234, 179, 8, 0.3);
+            color: #fef08a;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans h-full flex flex-col transition-colors duration-200">
+
+    <!-- Header Navbar -->
+    <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 shadow-sm transition-colors duration-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 gap-4">
+                
+                <!-- Logo & Mobile Menu Toggle -->
+                <div class="flex items-center gap-3">
+                    <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center gap-2.5 cursor-pointer" onclick="resetToHome()">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+                            <i class="fa-solid fa-book-bookmark text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-bold leading-tight bg-gradient-to-r from-brand-700 to-indigo-600 dark:from-brand-500 dark:to-indigo-400 bg-clip-text text-transparent">
+                                Sổ Tay Từ Tiếng Việt
+                            </h1>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Tra cứu thuật ngữ theo cấu trúc & cấu tạo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Central Search Bar -->
+                <div class="flex-1 max-w-xl relative">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="input-search" placeholder="Tìm kiếm thuật ngữ, ví dụ, nội dung..." 
+                            class="w-full pl-10 pr-10 py-2 bg-slate-100 dark:bg-slate-700/60 border border-transparent dark:border-slate-600 rounded-xl text-sm focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
+                        <button id="btn-clear-search" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Actions (Theme Switcher, Favorites, Stats) -->
+                <div class="flex items-center gap-2">
+                    <button id="btn-show-favorites" title="Từ điển yêu thích" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-bookmark text-lg"></i>
+                        <span id="badge-fav-count" class="hidden absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-800">0</span>
+                    </button>
+                    <button id="btn-toggle-dark" title="Chuyển chế độ Sáng/Tối" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                        <i class="fa-solid fa-sun hidden dark:block text-lg text-amber-400"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6 overflow-hidden">
+
+        <!-- Sidebar Navigation Directory -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-80 bg-white dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent border-r lg:border-r-0 border-slate-200 dark:border-slate-700 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col shrink-0">
+            <div class="p-4 lg:p-0 flex flex-col h-full overflow-hidden">
+                
+                <!-- Sidebar Mobile Header -->
+                <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 dark:border-slate-700 lg:hidden">
+                    <h2 class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-list-tree text-brand-500"></i> Danh mục thuật ngữ
+                    </h2>
+                    <button id="btn-close-sidebar" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Filter Radio Buttons -->
+                <div class="mb-3">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Bộ lọc nhanh</div>
+                    <div class="flex flex-wrap gap-1.5" id="category-pills">
+                        <!-- Dynamic Pills generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Directory Tree View List -->
+                <div class="flex-1 overflow-y-auto pr-2 space-y-1" id="sidebar-tree">
+                    <!-- Dynamic Tree View generated by JS -->
+                </div>
+
+                <!-- Stats Footer in Sidebar -->
+                <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500 dark:text-slate-400 flex justify-between items-center">
+                    <span>Tổng số khái niệm: <strong id="total-terms-count" class="text-brand-600 dark:text-brand-400 font-bold">0</strong></span>
+                    <button onclick="resetToHome()" class="hover:underline text-brand-500">Xem tất cả</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Backdrop for Mobile -->
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto pr-1">
+
+            <!-- Category Filter Bar (Top of Main area) -->
+            <div id="filter-bar" class="mb-4 flex items-center justify-between bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300 overflow-x-auto py-0.5">
+                    <span class="font-semibold text-slate-500 dark:text-slate-400 shrink-0"><i class="fa-solid fa-filter text-xs mr-1"></i>Đang xem:</span>
+                    <span id="current-filter-label" class="px-2.5 py-1 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 font-medium rounded-lg text-xs whitespace-nowrap">Tất cả bài học</span>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <select id="select-sort" class="text-xs bg-slate-100 dark:bg-slate-700 border-none rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-brand-500 text-slate-700 dark:text-slate-200">
+                        <option value="default">Thứ tự tài liệu</option>
+                        <option value="az">Tên A-Z</option>
+                        <option value="za">Tên Z-A</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Term Cards Grid Container -->
+            <div id="terms-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Term Cards render dynamically -->
+            </div>
+
+            <!-- Empty / Search Not Found View -->
+            <div id="empty-state" class="hidden flex-col items-center justify-center p-12 text-center bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 my-auto">
+                <div class="w-16 h-16 bg-slate-100 dark:bg-slate-700 text-slate-400 rounded-full flex items-center justify-center mb-4 text-2xl">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-base font-semibold text-slate-700 dark:text-slate-200 mb-1">Không tìm thấy kết quả</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-4">Không tìm thấy thuật ngữ nào phù hợp với từ khóa hoặc bộ lọc hiện tại.</p>
+                <button onclick="resetSearchAndFilter()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-medium transition-colors">
+                    Đặt lại bộ lọc
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Term Detail Modal View -->
+    <div id="modal-detail" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <!-- Backdrop -->
+        <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Modal Card -->
+        <div class="relative bg-white dark:bg-slate-800 w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 z-10 my-8 overflow-hidden transform transition-all flex flex-col max-h-[85vh]">
+            
+            <!-- Modal Header -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-50 to-brand-50/30 dark:from-slate-800 dark:to-slate-800/80 border-b border-slate-200 dark:border-slate-700 flex items-start justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <span id="modal-category-badge" class="px-2.5 py-0.5 bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 text-xs font-semibold rounded-md">
+                            Danh mục
+                        </span>
+                        <span id="modal-subcategory-badge" class="hidden px-2.5 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded-md">
+                            Tiểu loại
+                        </span>
+                    </div>
+                    <h2 id="modal-title" class="text-2xl font-bold text-slate-900 dark:text-white">
+                        Tên thuật ngữ
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="modal-btn-favorite" title="Lưu từ" class="p-2.5 rounded-full text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-bookmark text-xl"></i>
+                    </button>
+                    <button id="modal-btn-close" class="p-2.5 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
+                
+                <!-- Definition Box -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-align-left text-brand-500"></i> Định nghĩa / Khái niệm
+                    </h3>
+                    <div id="modal-definition" class="text-slate-700 dark:text-slate-200 leading-relaxed text-sm sm:text-base bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+                        Nội dung định nghĩa...
+                    </div>
+                </div>
+
+                <!-- Examples Box -->
+                <div id="modal-examples-container">
+                    <h3 class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-quote-left text-amber-500"></i> Ví dụ minh họa
+                    </h3>
+                    <div id="modal-examples" class="bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-800/40 p-4 rounded-xl text-slate-800 dark:text-amber-100 text-sm leading-relaxed italic">
+                        Các ví dụ...
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
+                <span>Sổ tay Ngữ pháp & Cấu tạo Từ Tiếng Việt</span>
+                <button id="modal-btn-copy" class="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium transition-colors">
+                    <i class="fa-regular fa-copy"></i> Sao chép nội dung
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-medium">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600"></i>
+        <span id="toast-msg">Thông báo...</span>
+    </div>
+
+    <script>
+        // Data Structure extracted precisely from document
+        const dictionaryData = [
+            // 📁 1. MỘT SỐ ĐƠN VỊ NGÔN NGỮ KHÁC
+            {
+                id: "am-tiet",
+                title: "Âm tiết",
+                category: "1. MỘT SỐ ĐƠN VỊ NGÔN NGỮ KHÁC",
+                subCategory: null,
+                definition: "Là đơn vị phát âm tự nhiên nhỏ nhất, là chỗ ngắt của chuỗi âm thanh diễn ra trong hoạt động lời nói.",
+                examples: "Các từ như: ba, bàn, hoa, nhà,... là từ một âm tiết; học sinh là từ có hai âm tiết,..."
+            },
+            {
+                id: "cum-tu-tu-do",
+                title: "Cụm từ tự do",
+                category: "1. MỘT SỐ ĐƠN VỊ NGÔN NGỮ KHÁC",
+                subCategory: null,
+                definition: "Là sự tổ hợp hai hoặc nhiều từ theo các quan hệ cú pháp thành một đơn vị để đảm nhiệm chức năng thành phần câu. Các từ trong một cụm từ nói chung vẫn giữ nghĩa riêng của mình, sự tổ hợp chúng lại với nhau thành cụm từ không làm thay đổi về cơ bản nghĩa của từng từ trong cụm.",
+                examples: "'bay' có thể xen vào giữa từ 'vụt mất' thành 'vụt bay mất' mà nghĩa cơ bản của cụm từ không đổi; 'hoa vàng' là cụm từ tự do vì vàng chỉ có chức năng phân biệt màu sắc chứ không thể phân hoa thành loại,…"
+            },
+            {
+                id: "thanh-dieu",
+                title: "Thanh điệu",
+                category: "1. MỘT SỐ ĐƠN VỊ NGÔN NGỮ KHÁC",
+                subCategory: null,
+                definition: "Là sự nâng cao hoặc hạ thấp giọng nói trong một âm tiết, có tác dụng khu biệt vỏ âm thanh của từ hoặc hình vị ở một số ngôn ngữ.",
+                examples: "Tiếng Việt có sáu thanh điệu là thanh ngang, sắc, huyền, hỏi, ngã, nặng."
+            },
+
+            // 📁 2. HÌNH VỊ VÀ TỪ TỐ
+            {
+                id: "dac-diem-hinh-vi",
+                title: "Đặc điểm của hình vị",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Hình vị là những hình thức ngữ âm nhỏ nhất có nghĩa, là \"những yếu tố mà ta không thể phân chia thành những yếu tố nhỏ hơn mà cũng có nghĩa\" (Đỗ Hữu Châu). Đặc điểm của hình vị là chỉ những tính chất, tiêu chí để xem xét một hình vị. Hình vị có ba đặc điểm: (1) Là hình thức ngữ âm có nghĩa; (2) Nhỏ nhất được tách ra từ các từ; (3) Được dùng lặp đi lặp lại.",
+                examples: "Từ 'xe đạp' gồm hai hình vị 'xe' và 'đạp', từ 'nhà' có một hình vị,..."
+            },
+            {
+                id: "tu-to-co-so",
+                title: "Từ tố cơ sở",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là những từ tố đơn âm tiếng Việt có khả năng hoạt động như từ đơn hoặc kết hợp với các từ tố đơn âm khác để tạo nên từ phức. Các từ tố cơ sở có thể chia làm ba loại: (1) những âm tiết tự do có nghĩa rõ ràng, có thể hoạt động như từ đơn; (2) những âm tiết không tự do có nghĩa và không đơn nhất, chúng không thể tự mình đứng độc lập nhưng có thể được dùng để cấu tạo nên một loạt từ; (3) những âm tiết không tự do từng có nghĩa, đơn nhất và không láy âm, thường đứng sau các âm tiết loại (1) trong các từ song tiết.",
+                examples: "Loại (1) như cốc, sách, vở, tốt…; loại (2) như tử (chết) tạo ra các từ tử địa, tử thi... hay thủy (nước) tạo ra các từ thủy thủ, thủy cung...; loại (3) như dả trong cỏ dả, han trong hỏi han, chiền trong chùa chiền,..."
+            },
+            {
+                id: "tu-to-doc-lap",
+                title: "Từ tố độc lập",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là những âm tiết tự do có nghĩa xác định rõ ràng, có thể hoạt động như từ đơn.",
+                examples: "sách, vở, tốt, cốc,..."
+            },
+            {
+                id: "tu-to-khong-doc-lap",
+                title: "Từ tố không độc lập",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là những âm tiết không tự do có nghĩa nhưng không thể tự mình đứng độc lập thành từ đơn, cần phải kết hợp với các từ tố khác để tạo thành một đơn vị có nghĩa hoàn chỉnh. Từ tố không độc lập có thể chia thành hai loại là: (1) các yếu tố Hán Việt hoặc (2) các âm tiết sau các từ tố độc lập trong các từ song tiết, là các âm tiết có nghĩa trong quá khứ nhưng nay đã mất nghĩa.",
+                examples: "Loại (1) như tử (chết) tạo ra tử địa, tử thi... hay thủy (nước) tạo ra thủy thủ, thủy cung...; loại (2) như dả trong cỏ dả, han trong hỏi han, chiền trong chùa chiền,..."
+            },
+            {
+                id: "tu-to-lay",
+                title: "Từ tố láy",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là từ tố/đơn vị thứ sinh được sản sinh ra theo phương thức láy từ từ tố cơ sở, là những âm tiết không tự do, đơn nhất và láy âm.",
+                examples: "chạp trong chậm chạp, thản trong thanh thản, tha trong thối tha,..."
+            },
+            {
+                id: "tu-to-loai-biet-nghia",
+                title: "Từ tố loại biệt nghĩa",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là từ tố phụ trong các từ ghép chính phụ phân nghĩa có tác dụng phân hóa nghĩa của từ tố chính thành từng loại nhỏ đồng nhất về yếu tố chỉ loại lớn.",
+                examples: "Các từ tố loại đơn, ghép, láy, phức đã phân hóa nghĩa của từ tố chính 'từ' thành các loại từ đơn, từ ghép, từ láy, từ phức."
+            },
+            {
+                id: "tu-to-loai-lon",
+                title: "Từ tố loại lớn",
+                category: "2. HÌNH VỊ VÀ TỪ TỐ",
+                subCategory: null,
+                definition: "Là từ tố chính trong các từ ghép chính phụ phân nghĩa, có nhiều nghĩa nên với mỗi nghĩa nó sẽ tạo ra một loại từ biệt loại có nét nghĩa chung.",
+                examples: "Từ tố 'từ' có nghĩa \"đơn vị ngôn ngữ nhỏ nhất có nghĩa hoàn chỉnh và cấu tạo ổn định, dùng để đặt câu\" sẽ cho ta các từ ghép biệt loại 'từ đơn', 'từ ghép', 'từ láy'…; với nghĩa \"có tính chất hút hoặc tác động lên sắt, thép và một số vật chất khác của nam châm\" sẽ cho ta các từ ghép biệt loại như 'từ tính', 'từ trường',..."
+            },
+
+            // 📁 3. PHƯƠNG THỨC CẤU TẠO TỪ
+            {
+                id: "cau-tao-tu",
+                title: "Cấu tạo từ",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là những vận động trong lòng một ngôn ngữ (dĩ nhiên được sự thúc đẩy của xã hội) để sản sinh ra các từ cho ngôn ngữ, phục vụ những nhu cầu mới về mặt diễn đạt mà xã hội đặt ra (Đỗ Hữu Châu, Từ vựng Ngữ nghĩa Tiếng Việt). Có thể hiểu cấu tạo từ là cách thức các hình vị kết hợp để tạo thành một từ có nghĩa.",
+                examples: "Từ ghép đẳng lập 'ăn mặc' được tạo nên bởi hai hình vị 'ăn' và 'mặc' đều có nghĩa; từ láy toàn phần 'xanh xanh' được cấu tạo bởi hai hình vị 'xanh' giống nhau về cả âm đầu và vần, thanh điệu…"
+            },
+            {
+                id: "phuong-thuc-tao-tu",
+                title: "Phương thức tạo từ",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là cách thức tổ chức các đơn vị cấu tạo từ để cho các từ của một ngôn ngữ nào đấy. Tiếng Việt có những phương thức tạo từ cơ bản như phương thức từ hóa hình vị, phương thức ghép hình vị, phương thức láy hình vị và phương thức chuyển nghĩa.",
+                examples: "Các phương thức: Từ hóa hình vị, ghép hình vị, láy hình vị và chuyển nghĩa."
+            },
+            {
+                id: "phuong-thuc-chuyen-nghia",
+                title: "Phương thức chuyển nghĩa",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là một phương thức tạo từ, trong đó một từ biến đổi nghĩa của nó thành một từ khác, từ mới được tạo ra và từ cũ có vỏ ngữ âm giống nhau nhưng nghĩa hoàn toàn khác nhau.",
+                examples: "chín (chỉ chữ số 9) và chín (trạng thái thực phẩm đã được nấu kĩ hoặc hoa quả vào giai đoạn phát triển đầy đủ nhất); cổ (bộ phận cơ thể nối phần đầu với thân) và cổ (thuộc về thời quá khứ xa xôi, thuộc về xưa cũ); giá (số tiền quy định để mua bán) hay giá (đậu xanh nảy mầm) và giá (vật dùng để đỡ, treo đồ vật)..."
+            },
+            {
+                id: "phuong-thuc-ghep",
+                title: "Phương thức ghép",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là một phương thức tạo từ, trong đó hai hoặc hơn hai đơn vị cấu tạo từ riêng rẽ ghép lại với nhau theo những quy tắc nhất định để cho một từ được gọi là từ ghép.",
+                examples: "xe và đạp là hai đơn vị vốn không có quan hệ với nhau được ghép lại thành từ 'xe đạp'; xinh và đẹp là hai tính từ riêng rẽ được ghép lại thành từ 'xinh đẹp',..."
+            },
+            {
+                id: "phuong-thuc-lay",
+                title: "Phương thức láy",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là một phương thức tạo từ tác động vào một đơn vị cấu tạo từ làm sản sinh ra một đơn vị thứ sinh, giữa hai đơn vị này có quan hệ ngữ âm nhất định. Tổ hợp đơn vị gốc và đơn vị thứ phát là một từ láy.",
+                examples: "Cho đơn vị 'xinh', phương thức láy tác động tạo đơn vị thứ sinh 'xắn' → 'xinh xắn'; cho đơn vị 'sạch', tác động tạo đơn vị thứ sinh 'sành', 'sanh' → 'sạch sành sanh',..."
+            },
+            {
+                id: "phuong-thuc-rut-gon",
+                title: "Phương thức rút gọn",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là phương thức loại bỏ đi một hoặc một số yếu tố trong một từ nhiều yếu tố đã có từ trước, kết quả cho ta một từ có số lượng yếu tố ít hơn nhưng vẫn mang nghĩa của từ đầy đủ có trước.",
+                examples: "Khi nhắc đến từ 'Đoàn', người Việt hiểu đó là 'Đoàn Thanh niên Cộng sản Hồ Chí Minh'; 'li' là rút gọn từ 'milimet', 'đô' là rút gọn từ 'đô-la',..."
+            },
+            {
+                id: "tu-hoa-hinh-vi",
+                title: "Từ hóa hình vị",
+                category: "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+                subCategory: null,
+                definition: "Là quá trình một hình vị vốn chưa có tư cách độc lập đã tích luỹ ngữ nghĩa, nhận năng lực ngữ pháp và trở thành một từ đơn độc lập có khả năng trực tiếp tạo câu.",
+                examples: "Sử, Lí, Địa,..."
+            },
+
+            // 📁 4. CÁC KIỂU TỪ THEO CẤU TẠO
+            {
+                id: "tu-don-don-am",
+                title: "Từ đơn đơn âm",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: null,
+                definition: "Là từ do một âm tiết cấu tạo nên và mang ý nghĩa hoàn chỉnh.",
+                examples: "nhà, mua, đẹp,..."
+            },
+            {
+                id: "tu-don-da-am",
+                title: "Từ đơn đa âm",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: null,
+                definition: "Là từ gồm từ hai âm tiết trở lên, có nghĩa hoàn chỉnh và không thể tách rời thành các từ nhỏ hơn có nghĩa độc lập.",
+                examples: "xà phòng, cà phê, bồ hóng,..."
+            },
+            {
+                id: "tu-phuc",
+                title: "Từ phức",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: null,
+                definition: "Là từ gồm hai hoặc nhiều hình vị ghép lại với nhau để tạo thành một đơn vị có nghĩa hoàn chỉnh. Từ phức gồm hai loại là từ láy và từ ghép xét về mặt cấu tạo từ.",
+                examples: "Các từ phức là từ láy như lo lắng, lung linh, lầm lì,...; các từ phức là từ ghép như ngữ nghĩa, ngôn ngữ, đồng ruộng,..."
+            },
+
+            // 🔹 4.1. Từ ghép và các tiểu loại
+            {
+                id: "tu-ghep",
+                title: "Từ ghép",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là các từ được tạo ra do sự kết hợp hai hoặc một số hình vị (hay đơn vị cấu tạo) tách biệt, riêng rẽ, độc lập đối với nhau.",
+                examples: "đồng ruộng, chờ đợi, chiến trường, xinh đẹp,..."
+            },
+            {
+                id: "tu-ghep-thuc",
+                title: "Từ ghép thực",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là từ ghép do hai hình vị thực kết hợp với nhau theo phương thức ghép mà có. Về quan hệ giữa các hình vị, các hình vị thực trong từ ghép thực khi kết hợp với nhau sẽ tạo thành hai kiểu quan hệ là quan hệ chính phụ hoặc quan hệ đẳng lập. Về ngữ nghĩa, các từ ghép thực thường giữ nguyên hoặc mở rộng, khái quát hóa ý nghĩa ngữ pháp của hình vị tạo nên nó.",
+                examples: "Quan hệ chính phụ: máy bay, máy may, máy uốn,...; Quan hệ đẳng lập: sách vở, bàn ghế, mái ngói,..."
+            },
+            {
+                id: "tu-ghep-hu",
+                title: "Từ ghép hư",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là từ ghép do hai hình vị hư kết hợp với nhau theo phương thức ghép mà có. Về quan hệ giữa các hình vị, các hình vị hư trong từ ghép hư khó có thể xác lập được quan hệ \"cú pháp\" như quan hệ giữa các hình vị thực trong từ ghép thực. Về ngữ nghĩa, các từ ghép hư thường thu hẹp phạm vi sử dụng, cụ thể hóa ý nghĩa ngữ pháp của hình vị tạo nên nó.",
+                examples: "tất thảy, bởi lẽ, huống chi, dẫu sao,..."
+            },
+            {
+                id: "tu-ghep-hop-nghia-phi-ca-the",
+                title: "Từ ghép hợp nghĩa phi cá thể",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép hợp nghĩa không có khả năng chỉ cá thể sự vật, hoạt động hay tính chất. Loại từ ghép này bao gồm ba trường hợp từ ghép hợp nghĩa tổng loại, từ ghép hợp nghĩa phối nghĩa và từ ghép hợp nghĩa chuyên chỉ loại.",
+                examples: "Chuyên chỉ loại: chợ búa, đường sá…; Tổng loại: ếch nhái, điện nước... không có ý nghĩa đơn nhất mà đều dùng để chỉ sự vật, hiện tượng nói chung."
+            },
+            {
+                id: "tu-ghep-hop-nghia-khong-phi-ca-the",
+                title: "Từ ghép hợp nghĩa không phi cá thể",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép hợp nghĩa mà cách thức cấu tạo giống hệt từ ghép hợp nghĩa phi cá thể (tính chất các hình vị và quan hệ giữa hình vị về cú pháp và ngữ nghĩa) nhưng vẫn có khả năng vừa chỉ cá thể vừa chỉ loại như những từ bình thường khác.",
+                examples: "chứng cớ, tốt đẹp, đường lối, bóc lột,..."
+            },
+            {
+                id: "tu-ghep-hop-nghia-tong-loai",
+                title: "Từ ghép hợp nghĩa tổng loại",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là từ ghép mà nghĩa của từng từ tố gộp lại tạo nên ý nghĩa tổng thể chỉ một loại lớn hơn, rộng hơn phạm vi loại do từng từ tố riêng lẻ biểu thị.",
+                examples: "ếch nhái, anh em, quần áo, buôn bán, nội ngoại,..."
+            },
+            {
+                id: "tu-ghep-hop-nghia-phoi-nghia",
+                title: "Từ ghép hợp nghĩa phối nghĩa",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là từ ghép đẳng lập mà ý nghĩa của toàn bộ từ không phải là tổng loại, không phải là chuyên loại mà do sự phối hợp nghĩa của các từ tố tạo thành.",
+                examples: "xăng dầu, gang thép, điện nước, lắp ghép, tốt đẹp"
+            },
+            {
+                id: "tu-ghep-hop-nghia-chuyen-chi-loai",
+                title: "Từ ghép hợp nghĩa chuyên chỉ loại",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép đẳng lập mà ý nghĩa tổng thể của toàn bộ từ ghép không lớn hơn về phạm vi loại so với loại do từ tố biểu thị.",
+                examples: "bếp núc, thuốc thang, gà qué, cá mú, nuôi dưỡng, chăm bón, làm ăn,..."
+            },
+            {
+                id: "tu-ghep-dang-lap-biet-lap",
+                title: "Từ ghép đẳng lập biệt lập",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là loại từ ghép gồm các từ tố bình đẳng với nhau nhưng nghĩa của chúng không phải tổng loại, không phải chuyên loại, cũng không phải phối nghĩa. Mỗi nghĩa là một sự kiện, một hoạt động, một tính chất riêng.",
+                examples: "Nhà nước, nước nhà, non sông, đất nước, phương hướng,..."
+            },
+            {
+                id: "tu-ghep-chinh-phu-biet-lap",
+                title: "Từ ghép chính phụ biệt lập",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là các từ ghép chính phụ mà nghĩa của mỗi từ không có quan hệ nằm trong so với nghĩa của một loại lớn nào, không lập thành một hệ thống nghĩa đồng nhất với các từ ghép chính phụ khác.",
+                examples: "ruột gà, cầu vai, mắt bão, ba chỉ, thắt lưng, mắc áo,..."
+            },
+            {
+                id: "tu-ghep-phan-nghia-dang-nghia",
+                title: "Từ ghép phân nghĩa đẳng nghĩa",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép có một hình vị chỉ loại lớn, các hình vị phân nghĩa khi dùng một mình cũng đã mang ý nghĩa của hình vị loại lớn, nghĩa của hai hình vị đã có phần nào đó đồng nghĩa với nhau.",
+                examples: "Trong từ ghép 'hoa cúc', 'cúc' dùng riêng đã có nghĩa là hoa. Ta có thể nói: mua cúc, trang trí bằng cúc, thích cúc hơn thích hồng."
+            },
+            {
+                id: "tu-ghep-phan-nghia-biet-nghia",
+                title: "Từ ghép phân nghĩa biệt nghĩa",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép có một hình vị chỉ loại lớn, các hình vị thứ hai hoàn toàn tách biệt không có sự thống nhất vào về nghĩa với các hình vị thứ nhất.",
+                examples: "Từ tố 'xe' khi kết hợp với 'đạp', 'hơi', 'hỏa'... sẽ tạo ra các từ khác nhau chỉ loại phương tiện di chuyển. Các từ tố đạp, hơi, hỏa... không có sự thống nhất về nghĩa với từ tố xe."
+            },
+            {
+                id: "tu-ghep-phan-nghia-phu-gia-hoa",
+                title: "Từ ghép phân nghĩa phụ gia hóa",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những từ ghép mà cả hai hình vị vừa có tính chất hình vị chỉ loại lớn vừa có tính chất hình vị phân nghĩa. Do đó, hình vị này phân nghĩa cho hình vị kia và ngược lại.",
+                examples: "tổ trưởng, tổ viên; phi chính phủ, phi vô sản, phi ngôn ngữ,..."
+            },
+            {
+                id: "tu-ghep-phan-nghia-sac-thai-hoa",
+                title: "Từ ghép phân nghĩa sắc thái hóa",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là từ kiểu ghép chính phụ phân nghĩa mà các từ tố phụ là các âm tiết có tác dụng chỉ các sắc thái khác nhau của tính chất hay trạng thái, hoạt động do từ tố loại lớn biểu thị.",
+                examples: "xanh lè, xanh om, xanh rì, thẳng đuột, thẳng đơ,..."
+            },
+            {
+                id: "tu-ghep-lam-thoi",
+                title: "Từ ghép lâm thời",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.1. Từ ghép và các tiểu loại",
+                definition: "Là những đơn vị tương đương với từ được người nói/viết tạo ra khi cần thiết trong lời nói, dựa trên các mô hình hình thức và ngữ nghĩa sẵn có của các từ ghép trong hệ thống ngôn ngữ.",
+                examples: "ưu khuyết điểm, tâm sinh lí, nhà nghiên cứu văn học thế giới,..."
+            },
+
+            // 🔹 4.2. Từ láy và các tiểu loại
+            {
+                id: "tu-lay",
+                title: "Từ láy",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ phức do phương thức láy tác động vào một từ tố cơ sở làm xuất hiện một từ tố thứ sinh được gọi là từ tố láy.",
+                examples: "gọn gàng, đẹp đẽ, khấp khểnh, sạch sành sanh,..."
+            },
+            {
+                id: "tu-lay-bo-phan",
+                title: "Từ láy bộ phận",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy mà một bộ phận ngữ âm của âm tiết từ tố cơ sở được láy lại. Các từ láy bộ phận có thể chia thành hai kiểu là các từ điệp âm (láy âm) và các từ điệp vần (láy vần).",
+                examples: "Láy âm: ngọt ngào, xinh xắn, buồn bã,...; Láy vần: bỡ ngỡ, lưa thưa, linh tinh,..."
+            },
+            {
+                id: "tu-lay-am",
+                title: "Từ láy âm",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy bộ phận mà phụ âm đầu của từ tố láy lặp lại phụ âm đầu của từ tố cơ sở, còn khuôn vần của từ tố láy thì khác với khuôn vần của từ tố cơ sở.",
+                examples: "dịu dàng, rộng rãi, ngay ngắn,..."
+            },
+            {
+                id: "tu-lay-van",
+                title: "Từ láy vần",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy mà vần của từ tố láy lặp đi lặp lại vần của từ tố cơ sở, còn phụ âm đầu thì khác.",
+                examples: "lùng bùng, lao đao, lim dim, loi choi, bủn rủn, bát ngát,..."
+            },
+            {
+                id: "tu-lay-toan-bo",
+                title: "Từ láy toàn bộ",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy mà toàn bộ âm tiết của từ tố cơ sở được láy lại. Chia làm ba kiểu: (1) thanh điệu & phụ âm cuối giữ nguyên; (2) phụ âm cuối giữ nguyên, thanh điệu biến đổi theo nhóm; (3) thanh điệu & phụ âm cuối cùng biến đổi theo nguyên tắc (-p→-m, -t→-n, -k/-ch→-ng, -nh).",
+                examples: "Kiểu (1): đen đen, chiều chiều, mãi mãi,...; Kiểu (2): nho nhỏ, chầm chậm, rờ rỡ,...; Kiểu (3): ăm ắp, ngòn ngọt, thinh thích,..."
+            },
+            {
+                id: "tu-lay-doi",
+                title: "Từ láy đôi",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy có hai âm tiết trong đó có một từ tố cơ sở và một từ tố láy, từ tố cơ sở có nghĩa, từ tố láy không có nghĩa, đi với nhau theo đúng quy tắc thanh điệu.",
+                examples: "Từ 'lạnh lẽo' có hai âm tiết, từ tố cơ sở là 'lạnh' (có nghĩa), từ tố láy là 'lẽo' (không có nghĩa độc lập); hai âm tiết giống nhau ở phụ âm đầu 'l', thanh điệu cùng nhóm thấp."
+            },
+            {
+                id: "tu-lay-ba",
+                title: "Từ láy ba",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy thế hệ thứ hai có ba âm tiết được tạo ra do phương thức láy tác động một lần vào một hình vị một âm tiết.",
+                examples: "khít → khít khìn khịt, ướt → ướt lướt thướt, sát → sát sàn sạt,..."
+            },
+            {
+                id: "tu-lay-tu",
+                title: "Từ láy tư",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là những từ láy thế hệ thứ hai có bốn âm tiết được tạo ra do: (1) phương thức láy tác động lần thứ hai vào một từ láy đôi hoặc (2) phương thức láy tác động một lần vào một đơn vị hai âm tiết.",
+                examples: "Phương thức (1): lung la lung linh (từ 'lung linh'), lấp la lấp lánh; Phương thức (2): lên lên xuống xuống ('lên xuống'), anh anh em em ('anh em'),..."
+            },
+            {
+                id: "khuon-van-lay",
+                title: "Khuôn vần láy",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là phần vần chung hoặc mô hình ngữ âm được lặp lại, đối xứng nhau giữa các tiếng trong một từ láy, mang theo những nét nghĩa biểu trưng hoặc sắc thái cảm xúc nhất định.",
+                examples: "Khuôn vần -i biểu thị âm thanh nhỏ, nhẹ (li ti, lí nhí); khuôn vần -ênh gợi tả cảm giác chênh vênh, kéo dài (chênh vênh, lênh đênh),..."
+            },
+            {
+                id: "lay-tan-cung",
+                title: "Láy tận cùng",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là kiểu láy mà đến đó không thể chia nhỏ được nữa. Ở từ láy âm, vần của hình vị cơ sở chuyển sang vần của hình vị láy. Ở từ láy vần, kiểu tận cùng sẽ là các từ láy có phụ âm đầu của hình vị láy giống nhau.",
+                examples: "Láy âm: mập mờ, thẫn thờ, lập lờ, vật vờ…; Láy vần: loi choi, lỗ chỗ, lanh chanh, loạng choạng,..."
+            },
+            {
+                id: "nhom-thanh-dieu",
+                title: "Nhóm thanh điệu",
+                category: "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+                subCategory: "4.2. Từ láy và các tiểu loại",
+                definition: "Là tập hợp các thanh điệu có chung đặc trưng âm vị học về âm vực, nhằm xem xét quy luật hài thanh khi các hình vị âm tiết kết hợp với nhau. Hệ thống 6 thanh điệu tiếng Việt chia thành 2 nhóm: thanh cao (hỏi, sắc, ngang) và thanh thấp (huyền, ngã, nặng).",
+                examples: "trong trẻo (hai âm tiết cùng nhóm thanh cao); bồng bềnh (hai âm tiết cùng nhóm thanh thấp)..."
+            },
+
+            // 📁 5. NGỮ CỐ ĐỊNH
+            {
+                id: "ngu-co-dinh",
+                title: "Ngữ cố định",
+                category: "5. NGỮ CỐ ĐỊNH",
+                subCategory: null,
+                definition: "Là các cụm từ (ý nghĩa có tính chất là ý nghĩa của cụm từ, cấu tạo là cấu tạo của cụm từ) đã cố định hoá nên cũng chặt chẽ, sẵn có, bắt buộc, có tính xã hội như từ.",
+                examples: "'màu cờ sắc áo' được tạo nên từ 4 từ đơn, nhưng đã được cố định hoá, chỉ tinh thần đoàn kết, danh dự, màu sắc đặc trưng đại diện cho một tập thể hoặc đội bóng..."
+            },
+            {
+                id: "ngu-co-dinh-mieu-ta",
+                title: "Ngữ cố định miêu tả",
+                category: "5. NGỮ CỐ ĐỊNH",
+                subCategory: null,
+                definition: "Là những ngữ cố định tương đương với các từ định danh, vừa có tác dụng gọi tên sự vật, hoạt động, tính chất, trạng thái chưa có tên gọi; vừa có tác dụng thể hiện các sắc thái khác nhau của một sự vật, hoạt động, tính chất, trạng thái nếu chúng đã có tên gọi.",
+                examples: "'tuần trăng mật' - chỉ khoảng thời gian hạnh phúc của vợ chồng mới cưới; 'quân sư quạt mo' - chỉ người hay bày mưu không đâu vào đâu; 'tóc rễ tre',..."
+            },
+            {
+                id: "quan-ngu",
+                title: "Quán ngữ",
+                category: "5. NGỮ CỐ ĐỊNH",
+                subCategory: null,
+                definition: "Là những cách nói, cách diễn đạt cần thiết để đưa đẩy, để chuyển ý hay dẫn ý, để nhập đề chứ không có tác dụng nêu bật một sắc thái của những cái đã có tên hoặc nêu bật ra các sự vật, hiện tượng, tính chất… chưa có tên gọi (Đỗ Hữu Châu).",
+                examples: "xét cho cùng, nhìn chung, chắc hẳn là, ví dụ như,…"
+            },
+            {
+                id: "thanh-ngu",
+                title: "Thành ngữ",
+                category: "5. NGỮ CỐ ĐỊNH",
+                subCategory: null,
+                definition: "Là tập hợp từ cố định đã quen dùng mà nghĩa thường không thể giải thích được một cách đơn giản bằng nghĩa của các từ tạo nên nó.",
+                examples: "hai sương một nắng, rán sành ra mỡ, chị ngã em nâng, chuột sa chĩnh gạo,..."
+            },
+            {
+                id: "tuc-ngu",
+                title: "Tục ngữ",
+                category: "5. NGỮ CỐ ĐỊNH",
+                subCategory: null,
+                definition: "Là những câu nói dân gian ngắn gọn, có vần điệu và hình ảnh, dùng để đúc kết kinh nghiệm, tri thức hoặc bài học đạo đức của nhân dân.",
+                examples: "“Có công mài sắt, có ngày nên kim”, “Gần mực thì đen, gần đèn thì rạng”..."
+            }
+        ];
+
+        // Unique Main Categories
+        const categories = [
+            "1. MỘT SỐ ĐƠN VỊ NGÔN NGỮ KHÁC",
+            "2. HÌNH VỊ VÀ TỪ TỐ",
+            "3. PHƯƠNG THỨC CẤU TẠO TỪ",
+            "4. CÁC KIỂU TỪ THEO CẤU TẠO",
+            "5. NGỮ CỐ ĐỊNH"
+        ];
+
+        // State Management
+        let currentFilter = 'ALL'; // 'ALL', Category Name, SubCategory Name, or 'FAVORITES'
+        let searchQuery = '';
+        let favorites = JSON.parse(localStorage.getItem('vietnamese_dict_favs') || '[]');
+        let currentModalTerm = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            renderCategoriesPills();
+            renderSidebarTree();
+            renderTerms();
+            updateFavBadge();
+
+            // Setup Search Input Event
+            const searchInput = document.getElementById('input-search');
+            const clearSearchBtn = document.getElementById('btn-clear-search');
+
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.trim().toLowerCase();
+                if (searchQuery.length > 0) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+                renderTerms();
+            });
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                clearSearchBtn.classList.add('hidden');
+                renderTerms();
+            });
+
+            // Sorting Selector
+            document.getElementById('select-sort').addEventListener('change', () => {
+                renderTerms();
+            });
+
+            // Favorites Filter Button Header
+            document.getElementById('btn-show-favorites').addEventListener('click', () => {
+                currentFilter = 'FAVORITES';
+                document.getElementById('current-filter-label').innerHTML = '<i class="fa-solid fa-bookmark text-amber-500 mr-1"></i> Từ điển yêu thích';
+                renderSidebarTree();
+                renderTerms();
+            });
+
+            // Dark Mode Toggle
+            document.getElementById('btn-toggle-dark').addEventListener('click', toggleDarkMode);
+
+            // Sidebar Mobile Controls
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            
+            document.getElementById('btn-toggle-sidebar').addEventListener('click', () => {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            });
+
+            const closeSidebar = () => {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            };
+
+            document.getElementById('btn-close-sidebar').addEventListener('click', closeSidebar);
+            backdrop.addEventListener('click', closeSidebar);
+
+            // Modal Controls
+            document.getElementById('modal-btn-close').addEventListener('click', closeModal);
+            document.getElementById('modal-backdrop').addEventListener('click', closeModal);
+            document.getElementById('modal-btn-favorite').addEventListener('click', () => {
+                if (currentModalTerm) {
+                    toggleFavorite(currentModalTerm.id);
+                    updateModalFavState();
+                }
+            });
+
+            document.getElementById('modal-btn-copy').addEventListener('click', copyModalContent);
+
+            // Total terms count in footer
+            document.getElementById('total-terms-count').innerText = dictionaryData.length;
+        });
+
+        // Dark Mode Logic
+        function initDarkMode() {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+
+        // Render Category Pills at top of sidebar
+        function renderCategoriesPills() {
+            const container = document.getElementById('category-pills');
+            let html = `
+                <button onclick="setFilter('ALL')" class="px-2.5 py-1 text-xs rounded-lg font-medium transition-colors ${currentFilter === 'ALL' ? 'bg-brand-600 text-white' : 'bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}">
+                    Tất cả
+                </button>
+            `;
+
+            categories.forEach((cat, index) => {
+                const shortName = `CĐ ${index + 1}`;
+                html += `
+                    <button onclick="setFilter('${cat}')" title="${cat}" class="px-2.5 py-1 text-xs rounded-lg font-medium transition-colors ${currentFilter === cat ? 'bg-brand-600 text-white' : 'bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}">
+                        ${shortName}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Render Directory Tree View in Sidebar
+        function renderSidebarTree() {
+            const treeContainer = document.getElementById('sidebar-tree');
+            let html = '';
+
+            categories.forEach((cat) => {
+                const isSelectedCat = currentFilter === cat;
+                const catTerms = dictionaryData.filter(t => t.category === cat);
+                
+                // Group subcategories
+                const hasSubcats = cat.includes("4. CÁC KIỂU TỪ THEO CẤU TẠO");
+                
+                html += `
+                    <div class="mb-2">
+                        <button onclick="setFilter('${cat}')" class="w-full text-left font-semibold text-xs px-2.5 py-2 rounded-lg flex items-center justify-between transition-colors ${isSelectedCat ? 'bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/50'}">
+                            <span class="truncate pr-1"><i class="fa-regular fa-folder text-brand-500 mr-2"></i>${cat}</span>
+                            <span class="text-[10px] bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded-full text-slate-600 dark:text-slate-400 font-normal">${catTerms.length}</span>
+                        </button>
+                `;
+
+                if (hasSubcats) {
+                    const sub1 = "4.1. Từ ghép và các tiểu loại";
+                    const sub2 = "4.2. Từ láy và các tiểu loại";
+                    
+                    const sub1Terms = dictionaryData.filter(t => t.subCategory === sub1);
+                    const sub2Terms = dictionaryData.filter(t => t.subCategory === sub2);
+                    const mainCat4Terms = dictionaryData.filter(t => t.category === cat && !t.subCategory);
+
+                    html += `<div class="ml-3 pl-2 border-l border-slate-200 dark:border-slate-700 mt-1 space-y-1">`;
+                    
+                    // Main terms of Cat 4
+                    mainCat4Terms.forEach(t => {
+                        html += `
+                            <button onclick="openTermById('${t.id}')" class="w-full text-left text-xs py-1 px-2 rounded text-slate-600 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 truncate block">
+                                • ${t.title}
+                            </button>
+                        `;
+                    });
+
+                    // Sub 1
+                    html += `
+                        <button onclick="setFilter('${sub1}')" class="w-full text-left font-medium text-xs py-1 px-2 rounded flex items-center justify-between ${currentFilter === sub1 ? 'text-brand-600 dark:text-brand-400 font-bold' : 'text-slate-600 dark:text-slate-300 hover:text-brand-600'}">
+                            <span class="truncate"><i class="fa-solid fa-folder-tree text-amber-500 mr-1.5"></i>${sub1}</span>
+                            <span class="text-[10px] text-slate-400">(${sub1Terms.length})</span>
+                        </button>
+                    `;
+
+                    // Sub 2
+                    html += `
+                        <button onclick="setFilter('${sub2}')" class="w-full text-left font-medium text-xs py-1 px-2 rounded flex items-center justify-between ${currentFilter === sub2 ? 'text-brand-600 dark:text-brand-400 font-bold' : 'text-slate-600 dark:text-slate-300 hover:text-brand-600'}">
+                            <span class="truncate"><i class="fa-solid fa-folder-tree text-purple-500 mr-1.5"></i>${sub2}</span>
+                            <span class="text-[10px] text-slate-400">(${sub2Terms.length})</span>
+                        </button>
+                    `;
+
+                    html += `</div>`;
+                }
+
+                html += `</div>`;
+            });
+
+            treeContainer.innerHTML = html;
+        }
+
+        // Filter Action
+        function setFilter(filterVal) {
+            currentFilter = filterVal;
+            const label = document.getElementById('current-filter-label');
+            if (filterVal === 'ALL') {
+                label.innerText = 'Tất cả bài học';
+            } else {
+                label.innerText = filterVal;
+            }
+
+            renderCategoriesPills();
+            renderSidebarTree();
+            renderTerms();
+
+            // Close mobile sidebar if open
+            if (window.innerWidth < 1024) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebar-backdrop').classList.add('hidden');
+            }
+        }
+
+        function resetSearchAndFilter() {
+            currentFilter = 'ALL';
+            searchQuery = '';
+            document.getElementById('input-search').value = '';
+            document.getElementById('btn-clear-search').classList.add('hidden');
+            document.getElementById('current-filter-label').innerText = 'Tất cả bài học';
+            renderCategoriesPills();
+            renderSidebarTree();
+            renderTerms();
+        }
+
+        function resetToHome() {
+            resetSearchAndFilter();
+        }
+
+        // Render Terms Main Cards View
+        function renderTerms() {
+            const container = document.getElementById('terms-container');
+            const emptyState = document.getElementById('empty-state');
+
+            let filtered = dictionaryData.filter(term => {
+                // Filter by Category / SubCategory / Favorites
+                if (currentFilter === 'FAVORITES') {
+                    if (!favorites.includes(term.id)) return false;
+                } else if (currentFilter !== 'ALL') {
+                    if (term.category !== currentFilter && term.subCategory !== currentFilter) {
+                        return false;
+                    }
+                }
+
+                // Filter by Search
+                if (searchQuery) {
+                    const matchTitle = term.title.toLowerCase().includes(searchQuery);
+                    const matchDef = term.definition.toLowerCase().includes(searchQuery);
+                    const matchEx = term.examples.toLowerCase().includes(searchQuery);
+                    return matchTitle || matchDef || matchEx;
+                }
+
+                return true;
+            });
+
+            // Sorting
+            const sortVal = document.getElementById('select-sort').value;
+            if (sortVal === 'az') {
+                filtered.sort((a, b) => a.title.localeCompare(b.title, 'vi'));
+            } else if (sortVal === 'za') {
+                filtered.sort((a, b) => b.title.localeCompare(a.title, 'vi'));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            emptyState.classList.remove('flex');
+
+            let html = '';
+            filtered.forEach(term => {
+                const isFav = favorites.includes(term.id);
+                
+                // Highlight search term helper
+                const highlightedTitle = highlightSearchText(term.title, searchQuery);
+                const highlightedDef = highlightSearchText(term.definition, searchQuery);
+
+                html += `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 p-5 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between group relative">
+                        <div>
+                            <!-- Header Badges -->
+                            <div class="flex items-start justify-between gap-2 mb-2">
+                                <span class="px-2.5 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-medium rounded-md truncate max-w-[80%]" title="${term.category}">
+                                    ${term.subCategory ? term.subCategory : term.category}
+                                </span>
+                                <button onclick="toggleFavorite('${term.id}', event)" class="text-slate-300 dark:text-slate-600 hover:text-amber-500 dark:hover:text-amber-400 p-1 transition-colors">
+                                    <i class="fa-solid fa-bookmark ${isFav ? 'text-amber-500 dark:text-amber-400' : ''}"></i>
+                                </button>
+                            </div>
+
+                            <!-- Term Title -->
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors mb-2 cursor-pointer" onclick="openTermModal('${term.id}')">
+                                ${highlightedTitle}
+                            </h3>
+
+                            <!-- Definition Snippet -->
+                            <p class="text-slate-600 dark:text-slate-300 text-sm line-clamp-3 leading-relaxed mb-4">
+                                ${highlightedDef}
+                            </p>
+                        </div>
+
+                        <!-- Footer Link Button -->
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                            <span class="text-xs text-slate-400 font-medium">Chi tiết bài học</span>
+                            <button onclick="openTermModal('${term.id}')" class="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors">
+                                Xem thêm <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Highlight text matched by search
+        function highlightSearchText(text, query) {
+            if (!query) return text;
+            const reg = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(reg, '<span class="highlight-text">$1</span>');
+        }
+
+        // Open Term Modal View
+        function openTermModal(termId) {
+            const term = dictionaryData.find(t => t.id === termId);
+            if (!term) return;
+
+            currentModalTerm = term;
+
+            document.getElementById('modal-title').innerText = term.title;
+            document.getElementById('modal-category-badge').innerText = term.category;
+
+            const subBadge = document.getElementById('modal-subcategory-badge');
+            if (term.subCategory) {
+                subBadge.innerText = term.subCategory;
+                subBadge.classList.remove('hidden');
+            } else {
+                subBadge.classList.add('hidden');
+            }
+
+            document.getElementById('modal-definition').innerText = term.definition;
+
+            const examplesBox = document.getElementById('modal-examples-container');
+            if (term.examples && term.examples.trim().length > 0) {
+                document.getElementById('modal-examples').innerText = term.examples;
+                examplesBox.classList.remove('hidden');
+            } else {
+                examplesBox.classList.add('hidden');
+            }
+
+            updateModalFavState();
+
+            const modal = document.getElementById('modal-detail');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openTermById(termId) {
+            openTermModal(termId);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal-detail');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            currentModalTerm = null;
+        }
+
+        // Update favorite bookmark status in Modal
+        function updateModalFavState() {
+            if (!currentModalTerm) return;
+            const favBtn = document.getElementById('modal-btn-favorite');
+            const isFav = favorites.includes(currentModalTerm.id);
+            if (isFav) {
+                favBtn.className = "p-2.5 rounded-full text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors";
+            } else {
+                favBtn.className = "p-2.5 rounded-full text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors";
+            }
+        }
+
+        // Toggle Bookmark / Favorites
+        function toggleFavorite(termId, event) {
+            if (event) event.stopPropagation();
+
+            const index = favorites.indexOf(termId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast("Đã xóa khỏi danh sách yêu thích", "info");
+            } else {
+                favorites.push(termId);
+                showToast("Đã thêm vào danh sách yêu thích", "success");
+            }
+
+            localStorage.setItem('vietnamese_dict_favs', JSON.stringify(favorites));
+            updateFavBadge();
+            renderTerms();
+        }
+
+        function updateFavBadge() {
+            const badge = document.getElementById('badge-fav-count');
+            if (favorites.length > 0) {
+                badge.innerText = favorites.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Copy content function
+        function copyModalContent() {
+            if (!currentModalTerm) return;
+            const content = `${currentModalTerm.title}\n\n[Định nghĩa]\n${currentModalTerm.definition}\n\n[Ví dụ]\n${currentModalTerm.examples}`;
+            
+            // Clipboard copy fallbacks
+            const textarea = document.createElement('textarea');
+            textarea.value = content;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Đã sao chép nội dung vào khay nhớ tạm!", "success");
+            } catch (err) {
+                showToast("Không thể sao chép văn bản", "error");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Toast Notification System
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMsg.innerText = message;
+
+            if (type === "success") {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 dark:text-emerald-500";
+            } else if (type === "info") {
+                toastIcon.className = "fa-solid fa-circle-info text-sky-400 dark:text-sky-500";
+            } else {
+                toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400 dark:text-amber-500";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
